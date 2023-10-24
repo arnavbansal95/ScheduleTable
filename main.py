@@ -32,8 +32,8 @@ def find_schedule_table(input_task_set, input_scheduling_points, prio_sort=True)
         for key in prio_weighed_tasks_dict.keys():
             temp_dict[prio_weighed_tasks_dict[key]] = tasks_dict[prio_weighed_tasks_dict[key]]
         tasks_dict = temp_dict
-    for point in input_scheduling_points:
-        test_point = int(point)
+    for point_sch in input_scheduling_points:
+        test_point = int(point_sch)
         for task in tasks_dict.keys():
             if (test_point % int(tasks_dict[task][1])) == 0:                # SchPoint % TimePeriod == 0
                 input_scheduling_points[str(test_point)].append(task)       # Task to be Scheduled on Point
@@ -45,9 +45,9 @@ def create_schedule_table_gantt_chart(input_task_set, input_schedule_table):
     for idx in range(len(input_task_set)):
         task_key = "T" + str(idx + 1)
         tasks_dict[task_key] = input_task_set[idx]                          # Assign TaskName to Tasks
-    for point in input_schedule_table:                                      # Add Tasks to Scheduling Points
-        start = int(point)
-        for task in input_schedule_table[point]:
+    for point_table in input_schedule_table:                                # Add Tasks to Scheduling Points
+        start = int(point_table)
+        for task in input_schedule_table[point_table]:
             finish = start + tasks_dict[task][0]
             temp_dict = dict(Task=task, Start=start, Finish=finish, Resource=task)
             start = finish
@@ -59,8 +59,8 @@ def create_schedule_table_gantt_chart(input_task_set, input_schedule_table):
                           group_tasks=True)
     fig.update_layout(xaxis_type='linear', autosize=False, width=1200, height=350)
     fig.update_xaxes(showgrid=False, showline=True, linewidth=2, linecolor='black')
-    for point in input_schedule_table:
-        fig.add_vline(x=int(point), line_width=2, line_color="black")
+    for point_graph in input_schedule_table:
+        fig.add_vline(x=int(point_graph), line_width=2, line_color="black")
     fig.write_html('first_figure.html', auto_open=True)
 
 
