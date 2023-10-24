@@ -5,7 +5,8 @@ import plotly.figure_factory as ff
 from collections import OrderedDict
 
 # Task_Set = [t(C, T)] :-> C - ExecutionTime, T - TimePeriod
-raw_task_set = [(3, 20), (2, 5), (2, 10)]
+# raw_task_set = [(3, 20), (2, 5), (2, 10)]         # Example 1
+raw_task_set = [(1, 4), (2, 6), (3, 10)]            # Example 2
 
 def prio_assignment(input_task_set):
     tasks_dict = {}
@@ -79,6 +80,8 @@ def generate_gantt_chart(input_timeline_list):
                           group_tasks=True)
     fig.update_layout(xaxis_type='linear', autosize=False, width=1200, height=350)
     fig.update_xaxes(showgrid=False, showline=True, linewidth=2, linecolor='black')
+    for idx in range(len(input_timeline_list) + 1):
+        fig.add_vline(x=idx, line_width=1, line_color="black", line_dash="dash")
     fig.write_html('first_figure.html', auto_open=True)
 
 
