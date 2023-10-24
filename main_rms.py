@@ -1,5 +1,7 @@
 # Rate Monotonic Scheduling Example
 import math
+import pandas as pd
+import plotly.figure_factory as ff
 from collections import OrderedDict
 
 # Task_Set = [t(C, T)] :-> C - ExecutionTime, T - TimePeriod
@@ -33,7 +35,7 @@ def prio_assignment(input_task_set):
     print("=" * 100)
     return tasks_dict
 
-def generate_scheduling(input_prio_weighed_task_set):
+def generate_scheduling_timeline(input_prio_weighed_task_set):
     task_periods = [int(x[1]) for x in input_prio_weighed_task_set.values()]    # Task Periods Extraction
     lcm_task_periods = math.lcm(*task_periods)                                  # Range for Scheduling Points
     timeline_list = ["Tx"] * lcm_task_periods                                   # Timeline List
@@ -55,10 +57,32 @@ def generate_scheduling(input_prio_weighed_task_set):
             if len(execution_list):
                 timeline_list[idx] = execution_list[0]
                 execution_list = execution_list[1:]
-    print(timeline_list)
+    return timeline_list
+
+def generate_gantt_chart(input_timeline_list):
+    dataframe_list = []
+    print("Based on RMS Convention, Timeline for Given TaskSet")
+    for idx in range(len(input_timeline_list)):
+        task = str(input_timeline_list[idx])
+        if task == "Tx":
+            task = "IDLE"
+        start = idx
+        finish = idx + 1
+        print(str(start) + "-" + str(finish) + ":\t" + task)
+        temp_dict = dict(Task=task, Start=start, Finish=finish, Resource=task)
+        dataframe_list.append(temp_dict)
+        # print(temp_dict)
+    print("=" * 100)
+
+    df = pd.DataFrame(dataframe_list)
+    fig = ff.create_gantt(df, index_col='Resource', bar_width=0.4, show_colorbar=True, title="Schedule Table",
+                          group_tasks=True)
+    fig.update_layout(xaxis_type='linear', autosize=False, width=1200, height=350)
+    fig.update_xaxes(showgrid=False, showline=True, linewidth=2, linecolor='black')
+    fig.write_html('first_figure.html', auto_open=True)
 
 
 if __name__ == '__main__':
     task_set = prio_assignment(input_task_set=raw_task_set)
-    generate_scheduling(input_prio_weighed_task_set=task_set)
-
+    timeline = generate_scheduling_timeline(input_prio_weighed_task_set=task_set)
+    generate_gantt_chart(input_timeline_list=timeline)
