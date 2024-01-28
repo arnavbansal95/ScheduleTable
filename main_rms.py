@@ -6,7 +6,8 @@ from collections import OrderedDict
 
 # Task_Set = [t(C, T)] :-> C - ExecutionTime, T - TimePeriod
 # raw_task_set = [(3, 20), (2, 5), (2, 10)]         # Example 1
-raw_task_set = [(1, 4), (2, 6), (3, 10)]            # Example 2
+# raw_task_set = [(1, 4), (2, 6), (3, 10)]          # Example 2
+raw_task_set = [(19, 500), (5, 400), (36, 1000)]    # Example 3
 
 def prio_assignment(input_task_set):
     tasks_dict = {}
@@ -40,7 +41,7 @@ def generate_scheduling_timeline(input_prio_weighed_task_set):
     task_periods = [int(x[1]) for x in input_prio_weighed_task_set.values()]    # Task Periods Extraction
     lcm_task_periods = math.lcm(*task_periods)                                  # Range for Scheduling Points
     timeline_list = ["Tx"] * lcm_task_periods                                   # Timeline List
-    execution_list = [[x] * input_prio_weighed_task_set[x][0] for x in input_prio_weighed_task_set]
+    execution_list = [[x] * int(input_prio_weighed_task_set[x][0]) for x in input_prio_weighed_task_set]
     execution_list = sum(execution_list, [])
     for idx in range(len(timeline_list)):
         if idx == 0:
@@ -87,5 +88,5 @@ def generate_gantt_chart(input_timeline_list):
 
 if __name__ == '__main__':
     task_set = prio_assignment(input_task_set=raw_task_set)
-    timeline = generate_scheduling_timeline(input_prio_weighed_task_set=task_set)
-    generate_gantt_chart(input_timeline_list=timeline)
+    # timeline = generate_scheduling_timeline(input_prio_weighed_task_set=task_set)
+    # generate_gantt_chart(input_timeline_list=timeline)
