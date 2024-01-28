@@ -34,7 +34,7 @@ class TaskSet:
         task_utilization = drs(len(self.generated_periods_list), self.cpu_utilization)
         for idx in range(len(task_utilization)):
             self.generated_execution_time_list.append(round(task_utilization[idx] *
-                                                            self.generated_periods_list[idx], 2))
+                                                            self.generated_periods_list[idx], 3))
 
     def generate_dict(self):
         for idx in range(len(self.generated_periods_list)):
