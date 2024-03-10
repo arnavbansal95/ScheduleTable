@@ -1,5 +1,6 @@
 import json
 import math
+from datetime import date
 
 
 class Schedule:
@@ -52,11 +53,13 @@ class Schedule:
                 final_str += "\t/* OsScheduleTableExpiryPoint_" + str(elem) + " */  \\\n"
             else:
                 final_str += str("\t{  \\\n") + elem + str("\t},  \\\n")
-        final_str = final_str.rstrip("\t},  \\\n") + "\n\t}"
-        header_str = "/*======================*/\n#ifdef OS_PATCH_CONFIG\n\n" + \
-                     "#define OS_NSTENTRIES " + str(len(self.generated_schedule_dict)) + \
-                     "\n#define OS_STENTRIES\n\n"
-        footer_str = "\n\n#endif\n/*======================*/"
+        final_str = final_str.rstrip("\\\n").rstrip().rstrip(",")
+        with open("src\\header.txt", "r") as f:
+            header_str_file = f.read()
+            header_str_file = header_str_file.replace("DATE_HERE", date.today().strftime("%d %b %Y"))
+        header_str = header_str_file + "\n\n#define OS_NSTENTRIES " + str(len(self.generated_schedule_dict)) \
+                     + "\n#define OS_STENTRIES\n\n "
+        footer_str = "\n\n#endif\n"
         final_str = header_str + final_str + footer_str
         with open("Os_config_patches.h", "w") as f:
             f.write(final_str)

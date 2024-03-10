@@ -5,7 +5,7 @@ from drs import drs
 
 
 class TaskSet:
-    def __init__(self, num_of_tasks, cpu_utilization=0.9, harmonic=False, filename=None):
+    def __init__(self, num_of_tasks, input_periods=None, cpu_utilization=0.9, harmonic=False, filename=None):
         self.num_of_tasks = num_of_tasks
         self.generated_periods_list = []
         self.generated_execution_time_list = []
@@ -13,8 +13,14 @@ class TaskSet:
         self.harmonic_tasks = harmonic
         self.cpu_utilization = cpu_utilization
         self.dict_filename = filename
+        # Range for Periods
+        self.lower_bound = 5
+        self.upper_bound = 500
 
-        self.generate_periods()
+        if input_periods is None:
+            self.generate_periods()
+        if input_periods is not None:
+            self.generated_periods_list = input_periods
         self.generate_execution_time()
         self.generate_dict()
 
@@ -24,10 +30,10 @@ class TaskSet:
         print("Execution Time of Tasks:\t" + str(self.generated_execution_time_list))
 
     def generate_periods(self):
-        raw_periods = np.random.uniform(5, 25, self.num_of_tasks)
+        raw_periods = np.random.uniform(self.lower_bound, self.upper_bound, self.num_of_tasks)
         self.generated_periods_list = [int(x) for x in raw_periods]
         if self.harmonic_tasks:
-            self.generated_periods_list = [math.floor(x / 5) * 5 for x in self.generated_periods_list]
+            self.generated_periods_list = [math.floor(x / 10) * 10 for x in self.generated_periods_list]
         self.generated_periods_list.sort()  # For RMS Prio Assignment
 
     def generate_execution_time(self):
