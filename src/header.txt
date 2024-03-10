@@ -1,0 +1,13 @@
+/*
+ * Os_config_patches.h
+ *
+ *  Created on: DATE_HERE
+ *      Author: SYSTEM_GENERATED_SCHEDULE
+ */
+
+#ifndef OS_CONFIG_PATCHES_H_
+#define OS_CONFIG_PATCHES_H_
+
+#ifdef OS_INCLUDE_PATCHES
+
+/* Put patches for Os_config.h here */
